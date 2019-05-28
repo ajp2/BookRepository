@@ -36,17 +36,37 @@ namespace BookRepository.Controllers
             return Ok(retrievedBook);
         }
 
-        //[Route("")]
-        //[HttpPost]
-        //public IActionResult Create(Book book)
-        //{
-        //    if (string.IsNullOrEmpty(book.Id))
-        //        book.Id = Guid.NewGuid().ToString();
+        [Route("")]
+        [HttpPost]
+        public IActionResult Create(Book book)
+        {
+            if (string.IsNullOrEmpty(book.Id))
+                book.Id = Guid.NewGuid().ToString();
 
-        //    _books.Add(book);
+            _repo.CreateBook(book);
 
-        //    string location = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}/books/{book.Id}";
-        //    return Created(location, book);
-        //}
+            string location = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}/books/{book.Id}";
+            return Created(location, book);
+        }
+
+        [Route("{bookId}")]
+        [HttpPut]
+        public IActionResult Update(string bookId, Book bookToUpdate)
+        {
+            bool updated = _repo.UpdateBook(bookToUpdate);
+            if (updated)
+                return Ok(bookToUpdate);
+            return NotFound();
+        }
+
+        [Route("{bookId}")]
+        [HttpDelete]
+        public IActionResult Delete(string bookId)
+        {
+            bool deleted = _repo.DeleteBook(bookId);
+            if (deleted)
+                return NoContent();
+            return NotFound();
+        }
     }
 }

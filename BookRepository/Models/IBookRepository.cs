@@ -9,5 +9,8 @@ namespace BookRepository.Models
     {
         List<Book> GetBooks();
         Book GetBookById(string Id);
+        Book CreateBook(Book newBook);
+        bool UpdateBook(Book bookToUpdate);
+        bool DeleteBook(string Id);
     }
 }
