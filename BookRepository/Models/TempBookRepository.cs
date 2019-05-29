@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookRepository.Models
 {
-    public class TempBookRepository : IBookRepository
+    public class TempBookRepository
     {
         private readonly List<Book> _books;
         public TempBookRepository()
@@ -17,25 +17,25 @@ namespace BookRepository.Models
             }
         }
 
-        public List<Book> GetBooks()
+        public List<Book> GetBooksAsync()
         {
             return _books;
         }
 
-        public Book GetBookById(string Id)
+        public Book GetBookByIdAsync(string Id)
         {
             return _books.FirstOrDefault(book => book.Id == Id);
         }
 
-        public Book CreateBook(Book newBook)
+        public bool CreateBookAsync(Book newBook)
         {
             _books.Add(newBook);
-            return newBook;
+            return true;
         }
 
-        public bool UpdateBook(Book bookToUpdate)
+        public bool UpdateBookAsync(Book bookToUpdate)
         {
-            bool exists = GetBookById(bookToUpdate.Id) != null;
+            bool exists = GetBookByIdAsync(bookToUpdate.Id) != null;
             if (!exists)
                 return false;
 
@@ -44,9 +44,9 @@ namespace BookRepository.Models
             return true;
         }
 
-        public bool DeleteBook(string Id)
+        public bool DeleteBookAsync(string Id)
         {
-            Book book = GetBookById(Id);
+            Book book = GetBookByIdAsync(Id);
             if (book == null)
                 return false;
 

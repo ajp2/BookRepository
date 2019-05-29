@@ -19,16 +19,16 @@ namespace BookRepository.Controllers
 
         [Route("")]
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_repo.GetBooks());
+            return Ok(await _repo.GetBooksAsync());
         }
 
         [Route("{bookId}")]
         [HttpGet]
-        public IActionResult Get(string bookId)
+        public async Task<IActionResult> Get(string bookId)
         {
-            var retrievedBook = _repo.GetBookById(bookId);
+            var retrievedBook = await _repo.GetBookByIdAsync(bookId);
 
             if (retrievedBook == null)
                 return NotFound();
@@ -38,12 +38,12 @@ namespace BookRepository.Controllers
 
         [Route("")]
         [HttpPost]
-        public IActionResult Create(Book book)
+        public async Task<IActionResult> Create(Book book)
         {
             if (string.IsNullOrEmpty(book.Id))
                 book.Id = Guid.NewGuid().ToString();
 
-            _repo.CreateBook(book);
+            await _repo.CreateBookAsync(book);
 
             string location = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}/books/{book.Id}";
             return Created(location, book);
@@ -51,9 +51,9 @@ namespace BookRepository.Controllers
 
         [Route("{bookId}")]
         [HttpPut]
-        public IActionResult Update(string bookId, Book bookToUpdate)
+        public async Task<IActionResult> Update(string bookId, Book bookToUpdate)
         {
-            bool updated = _repo.UpdateBook(bookToUpdate);
+            bool updated = await _repo.UpdateBookAsync(bookToUpdate);
             if (updated)
                 return Ok(bookToUpdate);
             return NotFound();
@@ -61,9 +61,9 @@ namespace BookRepository.Controllers
 
         [Route("{bookId}")]
         [HttpDelete]
-        public IActionResult Delete(string bookId)
+        public async Task<IActionResult> Delete(string bookId)
         {
-            bool deleted = _repo.DeleteBook(bookId);
+            bool deleted = await _repo.DeleteBookAsync(bookId);
             if (deleted)
                 return NoContent();
             return NotFound();

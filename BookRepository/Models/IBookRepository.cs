@@ -7,10 +7,10 @@ namespace BookRepository.Models
 {
     public interface IBookRepository
     {
-        List<Book> GetBooks();
-        Book GetBookById(string Id);
-        Book CreateBook(Book newBook);
-        bool UpdateBook(Book bookToUpdate);
-        bool DeleteBook(string Id);
+        Task<List<Book>> GetBooksAsync();
+        Task<Book> GetBookByIdAsync(string Id);
+        Task<bool> CreateBookAsync(Book newBook);
+        Task<bool> UpdateBookAsync(Book bookToUpdate);
+        Task<bool> DeleteBookAsync(string Id);
     }
 }
