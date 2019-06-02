@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookRepository.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRepository.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class BooksController : Controller
     {
