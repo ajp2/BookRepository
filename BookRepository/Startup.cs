@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
+using BookRepository.Services;
+using System.Text;
 
 namespace BookRepository
 {
@@ -28,11 +30,13 @@ namespace BookRepository
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IdentityService>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                var signingKey = Convert.FromBase64String(Configuration["JwtSettings:Secret"]);
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                var signingKey = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
