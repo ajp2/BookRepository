@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BookRepository.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -24,7 +25,9 @@ namespace BookRepository.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _repo.GetBooksAsync());
+            //return Ok(await _repo.GetBooksAsync());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Ok(new { id = userId });
         }
 
         [Route("{bookId}")]

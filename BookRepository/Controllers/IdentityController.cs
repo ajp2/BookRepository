@@ -23,9 +23,16 @@ namespace BookRepository.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login()
+        public async Task<IActionResult> Login([FromBody]AuthDto loginDto)
         {
-            return Ok();
+            var authResponse = await _identityService.LoginAsync(loginDto.Username, loginDto.Password);
+
+            if (!authResponse.Success)
+            {
+                return BadRequest(new { Errors = authResponse.Errors });
+            }
+
+            return Ok(new { Token = authResponse.Token });
         }
 
         [HttpPost("register")]

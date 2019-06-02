@@ -24,15 +24,33 @@ namespace BookRepository.Services
             _configuration = configuration;
         }
 
-        public string LoginAsync(AuthDto loginDto)
+        public async Task<AuthenticationResult> LoginAsync(string username, string password)
         {
-            return "test";
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "This username does not exist" }
+                };
+            }
+
+            var userHasValidPassword = await _userManager.CheckPasswordAsync(user, password);
+            if (!userHasValidPassword)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "Username or password is invalid" }
+                };
+            }
+
+            return GenerateAutheticationResult(user);
         }
 
         public async Task<AuthenticationResult> RegisterAsync(string username, string password)
         {
-            var existingUser = await _userManager.FindByNameAsync(username);
-            if (existingUser != null)
+            var user = await _userManager.FindByNameAsync(username);
+            if (user != null)
             {
                 return new AuthenticationResult
                 {
@@ -51,10 +69,15 @@ namespace BookRepository.Services
                 };
             }
 
+            return GenerateAutheticationResult(newUser);
+        }
+
+        private AuthenticationResult GenerateAutheticationResult(IdentityUser user)
+        {
             var claims = new[]
             {
-                new Claim("id", newUser.Id),
-                new Claim(JwtRegisteredClaimNames.Sub, newUser.UserName),
+                new Claim("id", user.Id),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

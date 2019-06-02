@@ -32,10 +32,17 @@ namespace BookRepository
         {
             services.AddTransient<IdentityService>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddJwtBearer(options =>
             {
-                var signingKey = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
+                options.SaveToken = true;
+
+                var signingKey = Encoding.UTF8.GetBytes(Configuration["JwtSettings:Secret"]);
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
@@ -76,8 +83,8 @@ namespace BookRepository
                 };
                 c.AddSecurityDefinition(name: "Bearer", new ApiKeyScheme
                 {
-                    Description = "JWT authorisation",
-                    Name = "Authorisation",
+                    Description = "JWT authorization",
+                    Name = "Authorization",
                     In = "header",
                     Type = "apiKey"
                 });
@@ -99,6 +106,8 @@ namespace BookRepository
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -108,7 +117,6 @@ namespace BookRepository
             app.UseHttpsRedirection();
             //app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
