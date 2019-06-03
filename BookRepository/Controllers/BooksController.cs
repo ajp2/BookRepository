@@ -12,7 +12,7 @@ namespace BookRepository.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class BooksController : Controller
+    public class BooksController : ControllerBase
     {
         IBookRepository _repo;
 
@@ -21,17 +21,13 @@ namespace BookRepository.Controllers
             _repo = repo;
         }
 
-        [Route("")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            //return Ok(await _repo.GetBooksAsync());
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return Ok(new { id = userId });
+            return Ok(await _repo.GetBooksAsync());
         }
 
-        [Route("{bookId}")]
-        [HttpGet]
+        [HttpGet("{bookId}")]
         public async Task<IActionResult> Get(string bookId)
         {
             var retrievedBook = await _repo.GetBookByIdAsync(bookId);
@@ -42,7 +38,6 @@ namespace BookRepository.Controllers
             return Ok(retrievedBook);
         }
 
-        [Route("")]
         [HttpPost]
         public async Task<IActionResult> Create(Book book)
         {
@@ -55,8 +50,7 @@ namespace BookRepository.Controllers
             return Created(location, book);
         }
 
-        [Route("{bookId}")]
-        [HttpPut]
+        [HttpPut("{bookId}")]
         public async Task<IActionResult> Update(string bookId, Book bookToUpdate)
         {
             bool updated = await _repo.UpdateBookAsync(bookToUpdate);
@@ -65,8 +59,7 @@ namespace BookRepository.Controllers
             return NotFound();
         }
 
-        [Route("{bookId}")]
-        [HttpDelete]
+        [HttpDelete("{bookId}")]
         public async Task<IActionResult> Delete(string bookId)
         {
             bool deleted = await _repo.DeleteBookAsync(bookId);
