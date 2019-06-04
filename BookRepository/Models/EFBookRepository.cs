@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,11 @@ namespace BookRepository.Models
     public class EFBookRepository : IBookRepository
     {
         private readonly AppDbContext _context;
-        public EFBookRepository(AppDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        public EFBookRepository(AppDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<List<Book>> GetBooksAsync()
@@ -31,8 +34,11 @@ namespace BookRepository.Models
             return updated > 0;
         }
 
-        public async Task<bool> CreateBookAsync(Book newBook)
+        public async Task<bool> CreateBookAsync(Book newBook, string userId)
         {
+            var currentUser = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+            newBook.User = currentUser;
+
             await _context.Books.AddAsync(newBook);
             var created = await _context.SaveChangesAsync();
             return created > 0;

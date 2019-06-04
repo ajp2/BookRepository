@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BookRepository.DTOs;
 using BookRepository.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookRepository.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ApiController]
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
@@ -35,27 +37,49 @@ namespace BookRepository.Controllers
             if (retrievedBook == null)
                 return NotFound();
 
-            return Ok(retrievedBook);
+            var bookResponse = new BookResponseDto
+            {
+                Id = retrievedBook.Id,
+                Read = retrievedBook.Read
+            };
+
+            return Ok(bookResponse);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Book book)
         {
-            if (string.IsNullOrEmpty(book.Id))
-                book.Id = Guid.NewGuid().ToString();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            await _repo.CreateBookAsync(book, userId);
 
-            await _repo.CreateBookAsync(book);
+            var bookResponse = new BookResponseDto
+            {
+                Id = book.Id,
+                Read = book.Read
+            };
 
             string location = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}/books/{book.Id}";
-            return Created(location, book);
+            return Created(location, bookResponse);
         }
 
         [HttpPut("{bookId}")]
         public async Task<IActionResult> Update(string bookId, Book bookToUpdate)
         {
+            if (bookToUpdate.Id == null)
+            {
+                bookToUpdate.Id = bookId;
+            };
+
             bool updated = await _repo.UpdateBookAsync(bookToUpdate);
             if (updated)
-                return Ok(bookToUpdate);
+            {
+                var bookResponse = new BookResponseDto
+                {
+                    Id = bookToUpdate.Id,
+                    Read = bookToUpdate.Read
+                };
+                return Ok(bookResponse);
+            }
             return NotFound();
         }
 

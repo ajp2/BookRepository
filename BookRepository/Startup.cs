@@ -57,11 +57,8 @@ namespace BookRepository
             services.AddDbContext<AppDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
-
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddScoped<IBookRepository, EFBookRepository>();
@@ -115,7 +112,6 @@ namespace BookRepository
             });
 
             app.UseHttpsRedirection();
-            //app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseMvc(routes =>
