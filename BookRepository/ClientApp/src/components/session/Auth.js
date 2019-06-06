@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button/";
 import { makeStyles } from "@material-ui/core/styles";
+import { auth, test } from "../../util/auth_util";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -32,18 +33,35 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Auth({ session }) {
+  // test();
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState([]);
 
   const handleSubmit = e => {
     e.preventDefault();
     console.log([username, password]);
+    auth(session, username, password)
+      .then(() => {
+        setUsername("");
+        setPassword("");
+        setErrors([]);
+        test();
+      })
+      .catch(err => setErrors(err.response.data.errors));
   };
 
   const login = () => (
     <form className={`auth-form ${classes.form}`} onSubmit={handleSubmit}>
       <h1>Login</h1>
+      {errors.length ? (
+        <ul>
+          {errors.map((err, idx) => (
+            <li key={idx}>{err}</li>
+          ))}
+        </ul>
+      ) : null}
       <TextField
         id="standard-name"
         label="Username"
@@ -63,6 +81,7 @@ function Auth({ session }) {
         onChange={e => setPassword(e.target.value)}
       />
       <Button
+        type="submit"
         variant="contained"
         color="primary"
         className={classes.button}
@@ -76,6 +95,13 @@ function Auth({ session }) {
   const signup = () => (
     <form className={`auth-form ${classes.form}`} onSubmit={handleSubmit}>
       <h1>Sign up</h1>
+      {errors.length ? (
+        <ul>
+          {errors.map((err, idx) => (
+            <li key={idx}>{err}</li>
+          ))}
+        </ul>
+      ) : null}
       <TextField
         id="standard-name"
         label="Username"
@@ -95,6 +121,7 @@ function Auth({ session }) {
         onChange={e => setPassword(e.target.value)}
       />
       <Button
+        type="submit"
         variant="contained"
         color="primary"
         className={classes.button}
