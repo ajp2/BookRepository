@@ -17,9 +17,9 @@ namespace BookRepository.Models
             _userManager = userManager;
         }
 
-        public async Task<List<Book>> GetBooksAsync()
+        public async Task<List<Book>> GetBooksAsync(string userId)
         {
-            return await _context.Books.ToListAsync();
+            return await _context.Books.Where(book => book.User.Id == userId).ToListAsync();
         }
 
         public async Task<Book> GetBookByIdAsync(string Id)
@@ -27,11 +27,17 @@ namespace BookRepository.Models
             return await _context.Books.SingleOrDefaultAsync(book => book.Id == Id);
         }
 
-        public async Task<bool> UpdateBookAsync(Book bookToUpdate)
+        public async Task<bool> UpdateBookAsync(Book bookToUpdate, string userId)
         {
-            _context.Books.Update(bookToUpdate);
-            var updated = await _context.SaveChangesAsync();
-            return updated > 0;
+            var book = await GetBookByIdAsync(bookToUpdate.Id);
+            if (book.User.Id == userId)
+            {
+                _context.Books.Update(bookToUpdate);
+                var updated = await _context.SaveChangesAsync();
+                return updated > 0;
+            }
+
+            return false;
         }
 
         public async Task<bool> CreateBookAsync(Book newBook, string userId)
@@ -44,12 +50,17 @@ namespace BookRepository.Models
             return created > 0;
         }
 
-        public async Task<bool> DeleteBookAsync(string Id)
+        public async Task<bool> DeleteBookAsync(string Id, string userId)
         {
             var book = await GetBookByIdAsync(Id);
-            _context.Books.Remove(book);
-            var deleted = await _context.SaveChangesAsync();
-            return deleted > 0;
+            if (book.User.Id == userId)
+            {
+                _context.Books.Remove(book);
+                var deleted = await _context.SaveChangesAsync();
+                return deleted > 0;
+            }
+
+            return false;
         }
     }
 }

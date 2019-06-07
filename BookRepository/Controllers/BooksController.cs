@@ -26,7 +26,8 @@ namespace BookRepository.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _repo.GetBooksAsync());
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return Ok(await _repo.GetBooksAsync(userId));
         }
 
         [HttpGet("{bookId}")]
@@ -70,7 +71,9 @@ namespace BookRepository.Controllers
                 bookToUpdate.Id = bookId;
             };
 
-            bool updated = await _repo.UpdateBookAsync(bookToUpdate);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            bool updated = await _repo.UpdateBookAsync(bookToUpdate, userId);
             if (updated)
             {
                 var bookResponse = new BookResponseDto
@@ -86,7 +89,8 @@ namespace BookRepository.Controllers
         [HttpDelete("{bookId}")]
         public async Task<IActionResult> Delete(string bookId)
         {
-            bool deleted = await _repo.DeleteBookAsync(bookId);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            bool deleted = await _repo.DeleteBookAsync(bookId, userId);
             if (deleted)
                 return NoContent();
             return NotFound();
