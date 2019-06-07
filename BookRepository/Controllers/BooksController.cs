@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BookRepository.DTOs;
@@ -21,6 +22,17 @@ namespace BookRepository.Controllers
         public BooksController(IBookRepository repo)
         {
             _repo = repo;
+        }
+
+
+        [HttpGet("search")]
+        public async Task<ActionResult<string>> Search(string query)
+        {
+            string url = $"https://www.googleapis.com/books/v1/volumes?q={query}&maxResults=25";
+            using (HttpClient client = new HttpClient())
+            {
+                return await client.GetStringAsync(url);
+            }
         }
 
         [HttpGet]

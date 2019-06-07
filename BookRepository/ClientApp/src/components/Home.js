@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { getBooks } from "../util/books_util";
+import BookList from "./BookList";
+import { searchBooks } from "../util/books_util";
 
 function Home() {
-  const [searchBooks, setSearchBooks] = useState("");
+  const [bookQuery, setBookQuery] = useState("");
+  const [bookResults, setBookResults] = useState([]);
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(searchBooks);
-    getBooks().then(data => console.log(data));
+    searchBooks(bookQuery).then(data => setBookResults(data.items));
   };
 
   return (
@@ -17,11 +18,12 @@ function Home() {
         <input
           type="text"
           placeholder="Search Books"
-          onChange={e => setSearchBooks(e.target.value)}
-          value={searchBooks}
+          onChange={e => setBookQuery(e.target.value)}
+          value={bookQuery}
         />
         <input type="submit" hidden={true} />
       </form>
+      {bookResults.length ? <BookList books={bookResults} /> : null}
     </div>
   );
 }
