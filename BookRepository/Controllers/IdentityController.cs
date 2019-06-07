@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BookRepository.Controllers
 {
-    [Route("identity")]
+    [Route("api/[controller]")]
     public class IdentityController : Controller
     {
         private readonly IdentityService _identityService;
@@ -35,7 +35,7 @@ namespace BookRepository.Controllers
             return Ok(new { Token = authResponse.Token });
         }
 
-        [HttpPost("register")]
+        [HttpPost("signup")]
         public async Task<IActionResult> Register([FromBody]AuthDto registerDto)
         {
             var authResponse = await _identityService.RegisterAsync(registerDto.Username, registerDto.Password);

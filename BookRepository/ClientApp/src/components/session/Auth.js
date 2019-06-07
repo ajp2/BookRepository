@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { withRouter } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button/";
 import { makeStyles } from "@material-ui/core/styles";
-import { auth, test } from "../../util/auth_util";
+import { auth } from "../../util/auth_util";
+import { UserContext } from "../UserContext";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -32,22 +34,23 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Auth({ session }) {
-  // test();
+function Auth({ session, history }) {
   const classes = useStyles();
+  const contextValue = useContext(UserContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log([username, password]);
     auth(session, username, password)
-      .then(() => {
+      .then(decoded => {
         setUsername("");
         setPassword("");
         setErrors([]);
-        test();
+        contextValue.loginSession(decoded);
+        history.push("/");
       })
       .catch(err => setErrors(err.response.data.errors));
   };
@@ -95,7 +98,7 @@ function Auth({ session }) {
   const signup = () => (
     <form className={`auth-form ${classes.form}`} onSubmit={handleSubmit}>
       <h1>Sign up</h1>
-      {errors.length ? (
+      {errors && errors.length ? (
         <ul>
           {errors.map((err, idx) => (
             <li key={idx}>{err}</li>
@@ -135,4 +138,4 @@ function Auth({ session }) {
   return session === "login" ? login() : signup();
 }
 
-export default Auth;
+export default withRouter(Auth);
