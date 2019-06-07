@@ -1,20 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-// export const signup = user => dispatch =>
-//   APIutil.signup(user)
-//     .then(() => dispatch(receiveUserSignIn()))
-//     .catch(err => dispatch(receiveErrors(err.response.data)));
-
-// export const login = token => {
-//   localStorage.setItem("jwtToken", token);
-//   setAuthToken(token);
-//   const decoded = jwt_decode(token);
-// };
-
-export const test = () =>
-  axios.get("/api/books").then(res => console.log(res.data));
-
 export const auth = (session, username, password) =>
   axios.post(`/api/identity/${session}`, { username, password }).then(res => {
     const token = res.data.token;

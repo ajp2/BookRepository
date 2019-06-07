@@ -3,13 +3,13 @@ import { Route } from "react-router";
 import Layout from "./components/Layout";
 import Home from "./components/Home";
 import Auth from "./components/session/Auth";
-import MyProvider from "./components/UserContext";
+import Provider from "./components/UserContext";
 
 export const UserContext = createContext();
 
 function App() {
   return (
-    <MyProvider>
+    <Provider>
       <Layout>
         <Route exact path="/" component={Home} />
         <Route
@@ -21,7 +21,7 @@ function App() {
           render={props => <Auth {...props} session="signup" />}
         />
       </Layout>
-    </MyProvider>
+    </Provider>
   );
 }
 

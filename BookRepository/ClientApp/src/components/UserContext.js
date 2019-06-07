@@ -6,7 +6,7 @@ import { setAuthToken } from "../util/auth_util";
 
 export const UserContext = createContext();
 
-function MyProvider({ children, history }) {
+function Provider({ children, history }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -17,8 +17,10 @@ function MyProvider({ children, history }) {
       history.push("/");
     } else {
       setAuthToken(localStorage["jwtToken"]);
-      isAuthenticated ? null : setIsAuthenticated(true);
-      user === null ? setUser(decoded) : null;
+      if (!isAuthenticated) {
+        setIsAuthenticated(true);
+        setUser(decoded);
+      }
     }
   }
 
@@ -41,4 +43,4 @@ function MyProvider({ children, history }) {
   );
 }
 
-export default withRouter(MyProvider);
+export default withRouter(Provider);
