@@ -2,9 +2,7 @@ import React from "react";
 import Book from "./Book";
 
 function BookList({ books }) {
-  console.log(books);
-
-  // sort by ratingsCount by reverse order
+  // sort by ratingsCount in reverse order
   const sortedBooks = books.sort((a, b) => {
     if (a.volumeInfo.ratingsCount > b.volumeInfo.ratingsCount) {
       return -1;

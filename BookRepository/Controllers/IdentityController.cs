@@ -25,6 +25,10 @@ namespace BookRepository.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]AuthDto loginDto)
         {
+            if (loginDto.Username == "guest")
+            {
+                loginDto.Password = "Password@123";
+            }
             var authResponse = await _identityService.LoginAsync(loginDto.Username, loginDto.Password);
 
             if (!authResponse.Success)

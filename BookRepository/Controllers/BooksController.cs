@@ -24,7 +24,7 @@ namespace BookRepository.Controllers
             _repo = repo;
         }
 
-
+        [AllowAnonymous]
         [HttpGet("search")]
         public async Task<ActionResult<string>> Search(string query)
         {
