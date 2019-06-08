@@ -24,17 +24,6 @@ namespace BookRepository.Controllers
             _repo = repo;
         }
 
-        [AllowAnonymous]
-        [HttpGet("search")]
-        public async Task<ActionResult<string>> Search(string query)
-        {
-            string url = $"https://www.googleapis.com/books/v1/volumes?q={query}&maxResults=25";
-            using (HttpClient client = new HttpClient())
-            {
-                return await client.GetStringAsync(url);
-            }
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
