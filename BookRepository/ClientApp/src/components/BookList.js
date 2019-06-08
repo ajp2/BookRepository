@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Book from "./Book";
+import BookTile from "./BookTile";
 
 const useStyles = makeStyles(() => ({
   bookList: {
@@ -30,7 +30,9 @@ function BookList({ books }) {
     <div>
       <ul className={classes.bookList}>
         {sortedBooks.map((book, idx) => (
-          <li key={idx}>{<Book bookInfo={book.volumeInfo} />}</li>
+          <li key={idx}>
+            {<BookTile bookInfo={{ ...book.volumeInfo, id: book.id }} />}
+          </li>
         ))}
       </ul>
     </div>

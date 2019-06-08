@@ -3,6 +3,7 @@ import { Route } from "react-router";
 import Layout from "./components/Layout";
 import Home from "./components/Home";
 import Auth from "./components/session/Auth";
+import Book from "./components/Book";
 import { AuthRoute, ProtectedRoute } from "./util/route_util";
 import { UserContext } from "./components/UserContext";
 
@@ -23,6 +24,7 @@ function App() {
         component={Auth}
         session="signup"
       />
+      <Route path="/books/:bookId" component={Book} />
     </Layout>
   );
 }
