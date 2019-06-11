@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { getBook, createBook } from "../util/books_util";
+import { getBook, createBook, bookInShelf } from "../util/books_util";
 
 function Book({ match }) {
   const [bookInfo, setBookInfo] = useState(null);
   const [userBook, setUserBook] = useState(null);
+  const [inShelf, setInShelf] = useState(false);
   const bookId = match.params.bookId;
 
   useEffect(() => {
     if (!bookInfo) {
+      bookInShelf(bookId).then(inShelf => setInShelf(inShelf));
       getBook(bookId).then(data => setBookInfo(data.volumeInfo));
     }
   });
@@ -24,9 +26,11 @@ function Book({ match }) {
           : null}
       </p>
       <p>Pages: {bookInfo.pageCount}</p>
-      <button onClick={() => addToBookshelf(bookId, bookInfo, setUserBook)}>
-        Add To Bookshelf
-      </button>
+      {!inShelf ? (
+        <button onClick={() => addToBookshelf(bookId, bookInfo, setUserBook)}>
+          Add To Bookshelf
+        </button>
+      ) : null}
     </div>
   );
 }

@@ -13,7 +13,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 function BookList({ books }) {
-  console.log(books);
   const classes = useStyles();
 
   // sort by ratingsCount in reverse order

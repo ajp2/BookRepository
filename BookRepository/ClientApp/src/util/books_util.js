@@ -16,3 +16,10 @@ export const getBooks = () => axios.get("/api/books").then(res => res.data);
 
 export const createBook = book =>
   axios.post("/api/books", book).then(res => res.data);
+
+export const bookInShelf = bookId => {
+  return axios
+    .get(`api/books/${bookId}`)
+    .then(res => true)
+    .catch(err => false);
+};

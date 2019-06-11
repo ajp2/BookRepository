@@ -17,7 +17,6 @@ const useStyles = makeStyles(() => ({
 
 function BookTile({ bookInfo }) {
   const classes = useStyles();
-  console.log(bookInfo);
 
   return (
     <Link to={`books/${bookInfo.id}`}>
