@@ -70,6 +70,12 @@ namespace BookRepository.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Book book)
         {
+            var retrievedBook = await _repo.GetBookByIdAsync(book.Id);
+            if (retrievedBook.Id == book.Id)
+            {
+                return UnprocessableEntity();
+            }
+
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             await _repo.CreateBookAsync(book, userId);
 
