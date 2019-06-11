@@ -30,7 +30,6 @@ function BookTile({ bookInfo }) {
           />
         ) : null}
         <strong>{bookInfo.title}</strong>
-        <p>{bookInfo.subtitle}</p>
         <p>{bookInfo.authors ? bookInfo.authors.join(", ") : null}</p>
       </div>
     </Link>

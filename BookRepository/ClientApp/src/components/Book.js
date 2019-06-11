@@ -13,7 +13,6 @@ function Book({ match }) {
   });
 
   if (!bookInfo) return "Loading";
-  console.log(bookInfo);
   return (
     <div>
       <h2>{bookInfo.title}</h2>
@@ -54,10 +53,8 @@ const addToBookshelf = (bookId, bookInfo, setUserBook) => {
     ThumbnailUrl: bookInfo.imageLinks.thumbnail,
     Authors: bookInfo.authors.join(", ")
   };
-  console.log(book);
 
   createBook(book).then(data => {
-    console.log("creating...");
     setUserBook(data);
   });
 };
