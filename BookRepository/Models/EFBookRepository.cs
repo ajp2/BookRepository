@@ -35,8 +35,6 @@ namespace BookRepository.Models
             {
                 book.Read = bookToUpdate.Read;
                 await _context.SaveChangesAsync();
-                //_context.Books.Update(bookToUpdate);
-                //var updated = await _context.SaveChangesAsync();
                 return true;
             }
 
