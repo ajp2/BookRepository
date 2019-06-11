@@ -71,7 +71,7 @@ namespace BookRepository.Controllers
         public async Task<IActionResult> Create(Book book)
         {
             var retrievedBook = await _repo.GetBookByIdAsync(book.Id);
-            if (retrievedBook.Id == book.Id)
+            if (retrievedBook != null && retrievedBook.Id == book.Id)
             {
                 return UnprocessableEntity();
             }

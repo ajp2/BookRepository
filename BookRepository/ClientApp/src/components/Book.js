@@ -1,11 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { getBook, createBook, bookInShelf } from "../util/books_util";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  getBook,
+  createBook,
+  bookInShelf,
+  removeBook
+} from "../util/books_util";
+import { UserContext } from "./UserContext";
 
 function Book({ match }) {
+  const contextValue = useContext(UserContext);
+
   const [bookInfo, setBookInfo] = useState(null);
   const [userBook, setUserBook] = useState(null);
   const [inShelf, setInShelf] = useState(false);
+
   const bookId = match.params.bookId;
+  const loggedIn = contextValue.session.isAuthenticated;
 
   useEffect(() => {
     if (!bookInfo) {
@@ -15,6 +25,7 @@ function Book({ match }) {
   });
 
   if (!bookInfo) return "Loading";
+
   return (
     <div>
       <h2>{bookInfo.title}</h2>
@@ -26,11 +37,18 @@ function Book({ match }) {
           : null}
       </p>
       <p>Pages: {bookInfo.pageCount}</p>
-      {!inShelf ? (
-        <button onClick={() => addToBookshelf(bookId, bookInfo, setUserBook)}>
+      {!inShelf && loggedIn ? (
+        <button
+          onClick={() =>
+            addToBookshelf(bookId, bookInfo, setInShelf, setUserBook)
+          }
+        >
           Add To Bookshelf
         </button>
       ) : null}
+      {inShelf && loggedIn
+        ? bookInShelfContent(bookId, setInShelf, setUserBook)
+        : null}
     </div>
   );
 }
@@ -49,7 +67,7 @@ const findImages = imageLinks => {
   return imageUrl;
 };
 
-const addToBookshelf = (bookId, bookInfo, setUserBook) => {
+const addToBookshelf = (bookId, bookInfo, setInShelf, setUserBook) => {
   const book = {
     Id: bookId,
     Read: false,
@@ -60,6 +78,26 @@ const addToBookshelf = (bookId, bookInfo, setUserBook) => {
 
   createBook(book).then(data => {
     setUserBook(data);
+    setInShelf(true);
+  });
+};
+
+const bookInShelfContent = (bookId, setInShelf, setUserBook) => (
+  <div>
+    <button
+      onClick={() => removeFromBookshelf(bookId, setInShelf, setUserBook)}
+    >
+      Remove From Bookshelf
+    </button>
+    <button>Mark as Read</button>
+    <h3>Add a chapter summary</h3>
+  </div>
+);
+
+const removeFromBookshelf = (bookId, setInShelf, setUserBook) => {
+  removeBook(bookId).then(() => {
+    setInShelf(false);
+    setUserBook(null);
   });
 };
 

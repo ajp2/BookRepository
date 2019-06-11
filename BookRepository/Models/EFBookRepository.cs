@@ -53,7 +53,8 @@ namespace BookRepository.Models
         public async Task<bool> DeleteBookAsync(string Id, string userId)
         {
             var book = await GetBookByIdAsync(Id);
-            if (book.User.Id == userId)
+            var currentUser = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+            if (book.User == currentUser)
             {
                 _context.Books.Remove(book);
                 var deleted = await _context.SaveChangesAsync();
