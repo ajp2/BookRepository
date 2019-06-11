@@ -3,7 +3,8 @@ import {
   getBook,
   createBook,
   bookInShelf,
-  removeBook
+  removeBook,
+  updateBook
 } from "../util/books_util";
 import { UserContext } from "./UserContext";
 
@@ -16,6 +17,14 @@ function Book({ match }) {
 
   const bookId = match.params.bookId;
   const loggedIn = contextValue.session.isAuthenticated;
+  const stateObj = {
+    bookId,
+    bookInfo,
+    userBook,
+    setUserBook,
+    inShelf,
+    setInShelf
+  };
 
   useEffect(() => {
     if (!bookInfo) {
@@ -38,17 +47,11 @@ function Book({ match }) {
       </p>
       <p>Pages: {bookInfo.pageCount}</p>
       {!inShelf && loggedIn ? (
-        <button
-          onClick={() =>
-            addToBookshelf(bookId, bookInfo, setInShelf, setUserBook)
-          }
-        >
+        <button onClick={() => addToBookshelf(stateObj)}>
           Add To Bookshelf
         </button>
       ) : null}
-      {inShelf && loggedIn
-        ? bookInShelfContent(bookId, setInShelf, setUserBook)
-        : null}
+      {inShelf && loggedIn ? bookInShelfContent(stateObj) : null}
     </div>
   );
 }
@@ -67,7 +70,7 @@ const findImages = imageLinks => {
   return imageUrl;
 };
 
-const addToBookshelf = (bookId, bookInfo, setInShelf, setUserBook) => {
+const addToBookshelf = ({ bookId, bookInfo, setInShelf, setUserBook }) => {
   const book = {
     Id: bookId,
     Read: false,
@@ -82,23 +85,25 @@ const addToBookshelf = (bookId, bookInfo, setInShelf, setUserBook) => {
   });
 };
 
-const bookInShelfContent = (bookId, setInShelf, setUserBook) => (
+const bookInShelfContent = stateObj => (
   <div>
-    <button
-      onClick={() => removeFromBookshelf(bookId, setInShelf, setUserBook)}
-    >
+    <button onClick={() => removeFromBookshelf(stateObj)}>
       Remove From Bookshelf
     </button>
-    <button>Mark as Read</button>
+    <button onClick={() => markBookAsRead(stateObj)}>Mark as Read</button>
     <h3>Add a chapter summary</h3>
   </div>
 );
 
-const removeFromBookshelf = (bookId, setInShelf, setUserBook) => {
+const removeFromBookshelf = ({ bookId, setInShelf, setUserBook }) => {
   removeBook(bookId).then(() => {
     setInShelf(false);
     setUserBook(null);
   });
+};
+
+const markBookAsRead = ({ bookId, userBook, setUserBook }) => {
+  console.log(userBook);
 };
 
 export default Book;

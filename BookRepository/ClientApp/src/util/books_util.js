@@ -15,10 +15,7 @@ export const getBook = bookId =>
 export const getBooks = () => axios.get("/api/books").then(res => res.data);
 
 export const createBook = book =>
-  axios
-    .post("/api/books", book)
-    .then(res => res.data)
-    .catch(err => console.log(err.response.data));
+  axios.post("/api/books", book).then(res => res.data);
 
 export const bookInShelf = bookId => {
   return axios
@@ -29,3 +26,5 @@ export const bookInShelf = bookId => {
 
 export const removeBook = bookId =>
   axios.delete(`api/books/${bookId}`).then(res => res.data);
+
+export const updateBook = book => axios.put(`api/books/${book.id}`, book);

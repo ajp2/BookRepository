@@ -30,7 +30,8 @@ namespace BookRepository.Models
         public async Task<bool> UpdateBookAsync(Book bookToUpdate, string userId)
         {
             var book = await GetBookByIdAsync(bookToUpdate.Id);
-            if (book.User.Id == userId)
+            var currentUser = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+            if (book.User == currentUser)
             {
                 _context.Books.Update(bookToUpdate);
                 var updated = await _context.SaveChangesAsync();
