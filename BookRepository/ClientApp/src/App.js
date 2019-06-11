@@ -28,7 +28,12 @@ function App() {
         session="signup"
       />
       <Route path="/books/:bookId" component={Book} />
-      <ProtectedRoute path="/books" component={UserBooks} loggedIn={loggedIn} />
+      <ProtectedRoute
+        exact
+        path="/books"
+        component={UserBooks}
+        loggedIn={loggedIn}
+      />
     </Layout>
   );
 }

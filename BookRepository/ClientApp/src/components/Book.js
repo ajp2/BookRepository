@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getBook } from "../util/books_util";
+import { getBook, createBook } from "../util/books_util";
 
 function Book({ match }) {
   const [bookInfo, setBookInfo] = useState(null);
+  const [userBook, setUserBook] = useState(null);
   const bookId = match.params.bookId;
 
   useEffect(() => {
@@ -24,6 +25,9 @@ function Book({ match }) {
           : null}
       </p>
       <p>Pages: {bookInfo.pageCount}</p>
+      <button onClick={() => addToBookshelf(bookId, bookInfo, setUserBook)}>
+        Add To Bookshelf
+      </button>
     </div>
   );
 }
@@ -40,6 +44,22 @@ const findImages = imageLinks => {
   }
 
   return imageUrl;
+};
+
+const addToBookshelf = (bookId, bookInfo, setUserBook) => {
+  const book = {
+    Id: bookId,
+    Read: false,
+    Title: bookInfo.title,
+    ThumbnailUrl: bookInfo.imageLinks.thumbnail,
+    Authors: bookInfo.authors.join(", ")
+  };
+  console.log(book);
+
+  createBook(book).then(data => {
+    console.log("creating...");
+    setUserBook(data);
+  });
 };
 
 export default Book;

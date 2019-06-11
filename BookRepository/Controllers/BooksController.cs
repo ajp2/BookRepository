@@ -36,7 +36,10 @@ namespace BookRepository.Controllers
                 var bookResponse = new BookResponseDto
                 {
                     Id = book.Id,
-                    Read = book.Read
+                    Read = book.Read,
+                    Title = book.Title,
+                    ThumbnailUrl = book.ThumbnailUrl,
+                    Authors = book.Authors
                 };
                 bookResponses.Add(bookResponse);
             }
@@ -55,7 +58,10 @@ namespace BookRepository.Controllers
             var bookResponse = new BookResponseDto
             {
                 Id = retrievedBook.Id,
-                Read = retrievedBook.Read
+                Read = retrievedBook.Read,
+                Title = retrievedBook.Title,
+                ThumbnailUrl = retrievedBook.ThumbnailUrl,
+                Authors = retrievedBook.Authors
             };
 
             return Ok(bookResponse);
@@ -70,7 +76,10 @@ namespace BookRepository.Controllers
             var bookResponse = new BookResponseDto
             {
                 Id = book.Id,
-                Read = book.Read
+                Read = book.Read,
+                Title = book.Title,
+                ThumbnailUrl = book.ThumbnailUrl,
+                Authors = book.Authors
             };
 
             string location = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}/books/{book.Id}";
@@ -93,7 +102,10 @@ namespace BookRepository.Controllers
                 var bookResponse = new BookResponseDto
                 {
                     Id = bookToUpdate.Id,
-                    Read = bookToUpdate.Read
+                    Read = bookToUpdate.Read,
+                    Title = bookToUpdate.Title,
+                    ThumbnailUrl = bookToUpdate.ThumbnailUrl,
+                    Authors = bookToUpdate.Authors
                 };
                 return Ok(bookResponse);
             }

@@ -7,9 +7,12 @@ export const searchBooks = query =>
     )}&maxResults=20`
   ).then(res => res.json());
 
-export const getBooks = () => axios.get("/api/books").then(res => res.data);
-
 export const getBook = bookId =>
   fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}`).then(res =>
     res.json()
   );
+
+export const getBooks = () => axios.get("/api/books").then(res => res.data);
+
+export const createBook = book =>
+  axios.post("/api/books", book).then(res => res.data);
