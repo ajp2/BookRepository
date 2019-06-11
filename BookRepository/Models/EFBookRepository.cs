@@ -33,9 +33,11 @@ namespace BookRepository.Models
             var currentUser = _userManager.Users.FirstOrDefault(u => u.Id == userId);
             if (book.User == currentUser)
             {
-                _context.Books.Update(bookToUpdate);
-                var updated = await _context.SaveChangesAsync();
-                return updated > 0;
+                book.Read = bookToUpdate.Read;
+                await _context.SaveChangesAsync();
+                //_context.Books.Update(bookToUpdate);
+                //var updated = await _context.SaveChangesAsync();
+                return true;
             }
 
             return false;

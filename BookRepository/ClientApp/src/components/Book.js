@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   getBook,
   createBook,
-  bookInShelf,
+  getBookFromShelf,
   removeBook,
   updateBook
 } from "../util/books_util";
@@ -28,8 +28,19 @@ function Book({ match }) {
 
   useEffect(() => {
     if (!bookInfo) {
-      bookInShelf(bookId).then(inShelf => setInShelf(inShelf));
-      getBook(bookId).then(data => setBookInfo(data.volumeInfo));
+      const getAndUpdateUserBook = bookId => {
+        getBookFromShelf(bookId).then(book => {
+          if (book) {
+            setUserBook(book);
+            setInShelf(true);
+          }
+        });
+      };
+
+      getBook(bookId).then(data => {
+        setBookInfo(data.volumeInfo);
+        getAndUpdateUserBook(bookId);
+      });
     }
   });
 
@@ -90,7 +101,12 @@ const bookInShelfContent = stateObj => (
     <button onClick={() => removeFromBookshelf(stateObj)}>
       Remove From Bookshelf
     </button>
-    <button onClick={() => markBookAsRead(stateObj)}>Mark as Read</button>
+    {stateObj.userBook.read ? (
+      <button onClick={() => updateReadStatus(stateObj)}>Mark as Unread</button>
+    ) : (
+      <button onClick={() => updateReadStatus(stateObj)}>Mark as Read</button>
+    )}
+
     <h3>Add a chapter summary</h3>
   </div>
 );
@@ -102,8 +118,9 @@ const removeFromBookshelf = ({ bookId, setInShelf, setUserBook }) => {
   });
 };
 
-const markBookAsRead = ({ bookId, userBook, setUserBook }) => {
-  console.log(userBook);
+const updateReadStatus = ({ bookId, userBook, setUserBook }) => {
+  userBook.read = !userBook.read;
+  updateBook(userBook).then(data => setUserBook(data));
 };
 
 export default Book;
