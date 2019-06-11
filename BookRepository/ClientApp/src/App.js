@@ -4,27 +4,31 @@ import Layout from "./components/Layout";
 import Home from "./components/Home";
 import Auth from "./components/session/Auth";
 import Book from "./components/Book";
+import UserBooks from "./components/UserBooks";
 import { AuthRoute, ProtectedRoute } from "./util/route_util";
 import { UserContext } from "./components/UserContext";
 
 function App() {
   const contextValue = useContext(UserContext);
+  const loggedIn = contextValue.session.isAuthenticated;
+
   return (
     <Layout>
       <Route exact path="/" component={Home} />
       <AuthRoute
         path="/login"
-        loggedIn={contextValue.session.isAuthenticated}
+        loggedIn={loggedIn}
         component={Auth}
         session="login"
       />
       <AuthRoute
         path="/signup"
-        loggedIn={contextValue.session.isAuthenticated}
+        loggedIn={loggedIn}
         component={Auth}
         session="signup"
       />
       <Route path="/books/:bookId" component={Book} />
+      <ProtectedRoute path="/books" component={UserBooks} loggedIn={loggedIn} />
     </Layout>
   );
 }

@@ -46,9 +46,16 @@ function NavMenu() {
           >
             <ul className="navbar-nav flex-grow">
               {loggedIn ? (
-                <NavItem onClick={handleLogout}>
-                  <button>Logout</button>
-                </NavItem>
+                <React.Fragment>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/books">
+                      My Books
+                    </NavLink>
+                  </NavItem>
+                  <NavItem onClick={handleLogout}>
+                    <button>Logout</button>
+                  </NavItem>
+                </React.Fragment>
               ) : (
                 <React.Fragment>
                   <NavItem>

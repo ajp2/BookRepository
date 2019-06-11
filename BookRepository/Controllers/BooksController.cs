@@ -28,7 +28,20 @@ namespace BookRepository.Controllers
         public async Task<IActionResult> GetAll()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return Ok(await _repo.GetBooksAsync(userId));
+
+            var books = await _repo.GetBooksAsync(userId);
+            var bookResponses = new List<BookResponseDto>();
+            foreach (var book in books)
+            {
+                var bookResponse = new BookResponseDto
+                {
+                    Id = book.Id,
+                    Read = book.Read
+                };
+                bookResponses.Add(bookResponse);
+            }
+
+            return Ok(bookResponses);
         }
 
         [HttpGet("{bookId}")]

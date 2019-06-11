@@ -10,6 +10,9 @@ namespace BookRepository.Models
     {
         public string Id { get; set; }
         public bool Read { get; set; }
+        public string Title { get; set; }
+        public string ThumbnailUrl { get; set; }
+        public string Authors { get; set; }
         public IdentityUser User { get; set; }
     }
 }

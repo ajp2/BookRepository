@@ -13,20 +13,19 @@ const useStyles = makeStyles(() => ({
 }));
 
 function BookList({ books }) {
+  console.log(books);
   const classes = useStyles();
 
   // sort by ratingsCount in reverse order
-  // const sortedBooks = books.sort((a, b) => {
-  //   if (a.volumeInfo.ratingsCount > b.volumeInfo.ratingsCount) {
-  //     return -1;
-  //   } else if (a.volumeInfo.ratingsCount < b.volumeInfo.ratingsCount) {
-  //     return 1;
-  //   } else {
-  //     return 0;
-  //   }
-  // });
-
-  const sortedBooks = books;
+  const sortedBooks = books.sort((a, b) => {
+    if (a.volumeInfo.ratingsCount > b.volumeInfo.ratingsCount) {
+      return -1;
+    } else if (a.volumeInfo.ratingsCount < b.volumeInfo.ratingsCount) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
 
   return (
     <div>
