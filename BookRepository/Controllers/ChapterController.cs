@@ -63,16 +63,34 @@ namespace BookRepository.Controllers
             return Created(location, chapterResponse);
         }
 
-        [HttpPut("{bookId}")]
-        public async Task<IActionResult> Update(Chapter chapter)
+        [HttpPut("{chapterId}")]
+        public async Task<IActionResult> Update(int chapterId, Chapter chapter)
         {
-            return Ok();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            bool updated = await _repo.UpdateChapterAsync(chapter, userId);
+            if (updated)
+            {
+                var chapterResponse = new ChapterResponseDto
+                {
+                    Id = chapter.Id,
+                    ChapterNumber = chapter.ChapterNumber,
+                    Content = chapter.Content,
+                    BookId = chapter.BookId
+                };
+                return Ok(chapterResponse);
+            }
+            return NotFound();
         }
 
-        [HttpDelete("{bookId}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int chapterId)
         {
-            return Ok();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            bool deleted = await _repo.DeleteChapterAsync(chapterId, userId);
+            if (deleted)
+                return NoContent();
+            return NotFound();
         }
     }
 }

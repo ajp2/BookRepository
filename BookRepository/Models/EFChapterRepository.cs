@@ -33,9 +33,17 @@ namespace BookRepository.Models
             return created > 0;
         }
 
-        public Task<bool> DeleteChapterAsync(int Id, string userId)
+        public async Task<bool> DeleteChapterAsync(int Id, string userId)
         {
-            throw new NotImplementedException();
+            var chapter = await GetChapterByIdAsync(Id);
+            if (chapter.UserId == userId)
+            {
+                _context.Chapters.Remove(chapter);
+                var deleted = await _context.SaveChangesAsync();
+                return deleted > 0;
+            }
+
+            return false;
         }
 
         public async Task<Chapter> GetChapterByIdAsync(int Id)
@@ -48,9 +56,18 @@ namespace BookRepository.Models
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateChapterAsync(Chapter chapterToUpdate, string userId)
+        public async Task<bool> UpdateChapterAsync(Chapter chapterToUpdate, string userId)
         {
-            throw new NotImplementedException();
+            var chapter = await GetChapterByIdAsync(chapterToUpdate.Id);
+            if (chapter.UserId == userId)
+            {
+                chapter.ChapterNumber = chapterToUpdate.ChapterNumber;
+                chapter.Content = chapterToUpdate.Content;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
         }
     }
 }
