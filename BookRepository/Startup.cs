@@ -62,6 +62,7 @@ namespace BookRepository
                 .AddDefaultTokenProviders();
 
             services.AddScoped<IBookRepository, EFBookRepository>();
+            services.AddScoped<IChapterRepository, EFChapterRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the React files will be served from this directory

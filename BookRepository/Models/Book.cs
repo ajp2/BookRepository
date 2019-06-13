@@ -14,5 +14,6 @@ namespace BookRepository.Models
         public string ThumbnailUrl { get; set; }
         public string Authors { get; set; }
         public IdentityUser User { get; set; }
+        public IEnumerable<Chapter> Chapters { get; set; }
     }
 }

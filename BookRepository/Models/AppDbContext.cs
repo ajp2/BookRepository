@@ -16,5 +16,6 @@ namespace BookRepository.Models
         }
 
         public DbSet<Book> Books { get; set; }
+        public DbSet<Chapter> Chapters { get; set; }
     }
 }
