@@ -21,7 +21,11 @@ function Chapters({ bookId }) {
   return (
     <div>
       {chapters.length ? (
-        <Chapter chapters={chapters} />
+        <Chapter
+          chapters={chapters}
+          setChapters={setChapters}
+          bookId={bookId}
+        />
       ) : (
         <ChapterForm
           bookId={bookId}

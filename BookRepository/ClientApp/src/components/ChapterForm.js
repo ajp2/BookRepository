@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { getChaptersByBookId, createChapter } from "../util/chapters_util";
 
-function ChapterForm({ bookId, chapters, setChapters }) {
-  const [chapterNumber, setChapterNumber] = useState(1);
+function ChapterForm({ bookId, chapters, setChapters, setAddChapter }) {
+  const lastChapter = chapters.length
+    ? chapters[chapters.length - 1].chapterNumber + 1
+    : 1;
+
+  const [chapterNumber, setChapterNumber] = useState(lastChapter);
   const [chapterContent, setChapterContent] = useState("");
 
   const handleSubmit = e => {
@@ -16,6 +20,7 @@ function ChapterForm({ bookId, chapters, setChapters }) {
       const updatedChapters = [...chapters, data];
       console.log(updatedChapters);
       setChapters(updatedChapters);
+      if (setAddChapter) setAddChapter();
     });
   };
 
