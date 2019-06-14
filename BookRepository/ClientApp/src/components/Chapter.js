@@ -12,7 +12,9 @@ function Chapter({ chapters, bookId, setChapters }) {
       </button>
       <ul>
         {chapters.map(chapter => (
-          <li key={chapter.id}>{chapter.chapterNumber}</li>
+          <li key={chapter.id} onClick={() => setSelectedChapter(chapter.id)}>
+            {chapter.chapterNumber}
+          </li>
         ))}
       </ul>
       {addChapter ? (
