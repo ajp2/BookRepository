@@ -7,6 +7,7 @@ import {
   updateBook
 } from "../util/books_util";
 import { UserContext } from "./UserContext";
+import Chapters from "./Chapters";
 
 function Book({ match }) {
   const contextValue = useContext(UserContext);
@@ -108,6 +109,7 @@ const bookInShelfContent = stateObj => (
     )}
 
     <h3>Add a chapter summary</h3>
+    <Chapters bookId={stateObj.bookId} />
   </div>
 );
 

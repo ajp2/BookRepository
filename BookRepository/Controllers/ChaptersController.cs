@@ -14,11 +14,11 @@ namespace BookRepository.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [Route("api/[controller]")]
-    public class ChapterController : ControllerBase
+    public class ChaptersController : ControllerBase
     {
         IChapterRepository _repo;
 
-        public ChapterController(IChapterRepository repo)
+        public ChaptersController(IChapterRepository repo)
         {
             _repo = repo;
         }
