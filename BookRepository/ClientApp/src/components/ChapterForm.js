@@ -1,12 +1,22 @@
 import React, { useState } from "react";
+import { getChaptersByBookId, createChapter } from "../util/chapters_util";
 
-function ChapterForm() {
+function ChapterForm({ bookId, chapters, setChapters }) {
   const [chapterNumber, setChapterNumber] = useState(1);
   const [chapterContent, setChapterContent] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log("submitting");
+    const chapter = {
+      ChapterNumber: chapterNumber,
+      Content: chapterContent,
+      BookId: bookId
+    };
+    createChapter(bookId, chapter).then(data => {
+      const updatedChapters = [...chapters, data];
+      console.log(updatedChapters);
+      setChapters(updatedChapters);
+    });
   };
 
   return (
