@@ -18,7 +18,6 @@ function ChapterForm({ bookId, chapters, setChapters, setAddChapter }) {
     };
     createChapter(bookId, chapter).then(data => {
       const updatedChapters = [...chapters, data];
-      console.log(updatedChapters);
       setChapters(updatedChapters);
       if (setAddChapter) setAddChapter();
     });

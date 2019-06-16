@@ -83,7 +83,7 @@ namespace BookRepository.Controllers
             return NotFound();
         }
 
-        [HttpDelete]
+        [HttpDelete("{chapterId}")]
         public async Task<IActionResult> Delete(int chapterId)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

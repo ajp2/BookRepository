@@ -45,7 +45,6 @@ function Book({ match }) {
     }
   });
 
-  console.log(bookId);
   if (!bookInfo) return "Loading";
 
   return (

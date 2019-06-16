@@ -5,7 +5,9 @@ import { getChaptersByBookId } from "../util/chapters_util";
 
 function Chapters({ bookId }) {
   const [chapters, setChapters] = useState([]);
+  const [addChapter, setAddChapter] = useState(false);
   const [fetchedInfo, setFetchedInfo] = useState(false);
+
   useEffect(() => {
     if (!fetchedInfo) {
       getChaptersByBookId(bookId)
@@ -18,9 +20,13 @@ function Chapters({ bookId }) {
   });
 
   if (!fetchedInfo) return false;
+
   return (
     <div>
-      {chapters.length ? (
+      <button onClick={() => setAddChapter(!addChapter)}>
+        Add New Chapter Summary
+      </button>
+      {!addChapter ? (
         <Chapter
           chapters={chapters}
           setChapters={setChapters}
@@ -30,7 +36,8 @@ function Chapters({ bookId }) {
         <ChapterForm
           bookId={bookId}
           chapters={chapters}
-          setChapters={setChapters}
+          setAddChapter={() => setAddChapter(false)}
+          setChapters={newChapters => setChapters(newChapters)}
         />
       )}
     </div>

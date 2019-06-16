@@ -5,3 +5,6 @@ export const getChaptersByBookId = bookId =>
 
 export const createChapter = (bookId, chapter) =>
   axios.post(`/api/chapters/${bookId}`, chapter).then(res => res.data);
+
+export const deleteChapter = chapterId =>
+  axios.delete(`/api/chapters/${chapterId}`).then(res => res.data);
