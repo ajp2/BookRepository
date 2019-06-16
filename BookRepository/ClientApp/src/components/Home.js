@@ -37,7 +37,9 @@ function Home() {
       {!loggedIn ? (
         <button onClick={handleLogin}>Login as a Guest</button>
       ) : null}
-      {bookResults.length ? <BookList books={bookResults} /> : null}
+      {bookResults && bookResults.length ? (
+        <BookList books={bookResults} />
+      ) : null}
     </div>
   );
 }
