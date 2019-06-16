@@ -8,3 +8,6 @@ export const createChapter = (bookId, chapter) =>
 
 export const deleteChapter = chapterId =>
   axios.delete(`/api/chapters/${chapterId}`).then(res => res.data);
+
+export const updateChapter = (chapterId, chapter) =>
+  axios.put(`/api/chapters/${chapterId}`, chapter).then(res => res.data);

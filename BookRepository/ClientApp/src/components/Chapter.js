@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
-import ChapterForm from "./ChapterForm";
-import { deleteChapter } from "../util/chapters_util";
+import React, { useState } from "react";
+import { deleteChapter, updateChapter } from "../util/chapters_util";
 
 function Chapter({ chapters, bookId, setChapters }) {
   chapters = chapters.slice();
   let initialChapter = chapters[0] ? chapters[0].id : false;
 
-  const [selectedChapter, setSelectedChapter] = useState(initialChapter);
-  const [editChapter, setEditChapter] = useState(false);
-
   const getCurrentChapter = () => {
     const chapter = chapters.find(chapter => chapter.id === selectedChapter);
     return chapter ? chapter : {};
   };
+
+  const [selectedChapter, setSelectedChapter] = useState(initialChapter);
+  const [editChapter, setEditChapter] = useState(false);
+  const [editChapterText, setEditChapterText] = useState(
+    getCurrentChapter().content
+  );
 
   const removeChapter = chapterId => {
     deleteChapter(chapterId).then(data => {
@@ -24,16 +26,23 @@ function Chapter({ chapters, bookId, setChapters }) {
     });
   };
 
+  const currentChapter = getCurrentChapter();
+
   const handleSubmit = e => {
     e.preventDefault();
-    console.log("submitting");
+    const chapter = {
+      id: currentChapter.id,
+      chapterNumber: currentChapter.chapterNumber,
+      content: editChapterText,
+      bookId: currentChapter.bookId
+    };
+    updateChapter(currentChapter.id, chapter).then(data => {
+      const chapterIdx = chapters.findIndex(chap => chap.id === chapter.id);
+      chapters[chapterIdx].content = editChapterText;
+      setChapters(chapters);
+      setEditChapter(false);
+    });
   };
-
-  const editChapterClick = () => {
-    setEditChapter(!editChapter);
-  };
-
-  const currentChapter = getCurrentChapter();
 
   return (
     <div>
@@ -46,13 +55,19 @@ function Chapter({ chapters, bookId, setChapters }) {
       </ul>
       {Object.keys(currentChapter).length ? (
         <div>
-          <button onClick={editChapterClick}>Edit Chapter</button>
+          <button onClick={() => setEditChapter(!editChapter)}>
+            Edit Chapter
+          </button>
           <button onClick={() => removeChapter(currentChapter.id)}>
             Delete Chapter
           </button>
           {editChapter ? (
             <form onSubmit={handleSubmit}>
-              <input type="text" value={currentChapter.content} />
+              <input
+                type="text"
+                value={editChapterText}
+                onChange={e => setEditChapterText(e.target.value)}
+              />
             </form>
           ) : (
             <p className="chapter-content">{currentChapter.content}</p>
