@@ -44,11 +44,16 @@ function Chapter({ chapters, bookId, setChapters }) {
     });
   };
 
+  const updateSelectedChapter = chapter => {
+    setSelectedChapter(chapter.id);
+    setEditChapterText(chapter.content);
+  };
+
   return (
     <div>
       <ul>
         {chapters.map(chapter => (
-          <li key={chapter.id} onClick={() => setSelectedChapter(chapter.id)}>
+          <li key={chapter.id} onClick={() => updateSelectedChapter(chapter)}>
             {chapter.chapterNumber}
           </li>
         ))}
