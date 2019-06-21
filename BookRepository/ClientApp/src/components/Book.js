@@ -8,8 +8,34 @@ import {
 } from "../util/books_util";
 import { UserContext } from "./UserContext";
 import Chapters from "./Chapters";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+
+const useStyles = makeStyles(theme => ({
+  infoSection: {
+    display: "flex"
+  },
+  leftSection: {
+    width: "25%"
+  },
+  rightSection: {
+    width: "75%",
+    marginLeft: "3.5rem"
+  },
+  bookContainer: {
+    maxWidth: "70rem",
+    margin: "4rem auto"
+  },
+  chapterSection: {
+    margin: "2.5rem 0 1rem 0"
+  },
+  button: {
+    margin: "4rem 5rem 2rem 5rem"
+  }
+}));
 
 function Book({ match }) {
+  const classes = useStyles();
   const contextValue = useContext(UserContext);
 
   const [bookInfo, setBookInfo] = useState(null);
@@ -24,7 +50,8 @@ function Book({ match }) {
     userBook,
     setUserBook,
     inShelf,
-    setInShelf
+    setInShelf,
+    classes
   };
 
   useEffect(() => {
@@ -48,20 +75,31 @@ function Book({ match }) {
   if (!bookInfo) return "Loading";
 
   return (
-    <div>
-      <h2>{bookInfo.title}</h2>
-      <img src={findImages(bookInfo.imageLinks)} alt={bookInfo.title} />
-      <p>{bookInfo.authors ? bookInfo.authors.join(", ") : null}</p>
-      <p>
-        {bookInfo.description
-          ? bookInfo.description.replace(/<[^>]*>?/gm, "")
-          : null}
-      </p>
-      <p>Pages: {bookInfo.pageCount}</p>
+    <div className={classes.bookContainer}>
+      <div className={classes.infoSection}>
+        <div className={classes.leftSection}>
+          <img src={findImages(bookInfo.imageLinks)} alt={bookInfo.title} />
+        </div>
+        <div className={classes.rightSection}>
+          <h2>{bookInfo.title}</h2>
+          <p>{bookInfo.authors ? bookInfo.authors.join(", ") : null}</p>
+          <p>
+            {bookInfo.description
+              ? bookInfo.description.replace(/<[^>]*>?/gm, "")
+              : null}
+          </p>
+          <p>Page Count: {bookInfo.pageCount}</p>
+        </div>
+      </div>
+
       {!inShelf && loggedIn ? (
-        <button onClick={() => addToBookshelf(stateObj)}>
+        <Button
+          variant="outlined"
+          onClick={() => addToBookshelf(stateObj)}
+          className={classes.button}
+        >
           Add To Bookshelf
-        </button>
+        </Button>
       ) : null}
       {inShelf && loggedIn ? bookInShelfContent(stateObj) : null}
     </div>
@@ -99,16 +137,32 @@ const addToBookshelf = ({ bookId, bookInfo, setInShelf, setUserBook }) => {
 
 const bookInShelfContent = stateObj => (
   <div>
-    <button onClick={() => removeFromBookshelf(stateObj)}>
+    <Button
+      variant="outlined"
+      onClick={() => removeFromBookshelf(stateObj)}
+      className={stateObj.classes.button}
+    >
       Remove From Bookshelf
-    </button>
+    </Button>
     {stateObj.userBook.read ? (
-      <button onClick={() => updateReadStatus(stateObj)}>Mark as Unread</button>
+      <Button
+        variant="outlined"
+        onClick={() => updateReadStatus(stateObj)}
+        className={stateObj.classes.button}
+      >
+        Mark as Unread
+      </Button>
     ) : (
-      <button onClick={() => updateReadStatus(stateObj)}>Mark as Read</button>
+      <Button
+        variant="outlined"
+        onClick={() => updateReadStatus(stateObj)}
+        className={stateObj.classes.button}
+      >
+        Mark as Read
+      </Button>
     )}
 
-    <h3>Add a chapter summary</h3>
+    <h3 className={stateObj.classes.chapterSection}>Chapter Summaries</h3>
     <Chapters bookId={stateObj.bookId} />
   </div>
 );

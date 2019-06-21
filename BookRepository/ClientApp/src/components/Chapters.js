@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ChapterForm from "./ChapterForm";
 import Chapter from "./Chapter";
 import { getChaptersByBookId } from "../util/chapters_util";
+import Button from "@material-ui/core/Button";
 
 function Chapters({ bookId }) {
   const [chapters, setChapters] = useState([]);
@@ -23,9 +24,13 @@ function Chapters({ bookId }) {
 
   return (
     <div>
-      <button onClick={() => setAddChapter(!addChapter)}>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => setAddChapter(!addChapter)}
+      >
         Add New Chapter Summary
-      </button>
+      </Button>
       {!addChapter ? (
         <Chapter
           chapters={chapters}
