@@ -7,11 +7,27 @@ const useStyles = makeStyles(() => ({
     width: "15rem",
     height: "20rem",
     padding: "1.2rem 0.8rem",
-    overflow: "hidden"
+    margin: "1rem 0.5rem",
+    color: "black",
+    textAlign: "center",
+    overflow: "hidden",
+    "&:hover": {
+      background: "#eee"
+    }
   },
   bookImage: {
     display: "block",
-    margin: "0 auto"
+    width: "130px",
+    height: "180px",
+    margin: "0 auto",
+    marginBottom: "1rem"
+  },
+  p: {
+    margin: "0.2rem"
+  },
+  pSmall: {
+    margin: "0.1rem",
+    fontSize: "12px"
   }
 }));
 
@@ -19,7 +35,7 @@ function BookTile({ bookInfo }) {
   const classes = useStyles();
 
   return (
-    <Link to={`books/${bookInfo.id}`}>
+    <Link to={`books/${bookInfo.id}`} style={{ textDecoration: "none" }}>
       <div className={classes.bookTile}>
         {bookInfo.imageLinks && bookInfo.imageLinks.thumbnail ? (
           <img
@@ -28,8 +44,10 @@ function BookTile({ bookInfo }) {
             className={classes.bookImage}
           />
         ) : null}
-        <strong>{bookInfo.title}</strong>
-        <p>{bookInfo.authors ? bookInfo.authors.join(", ") : null}</p>
+        <p className={classes.p}>{bookInfo.title}</p>
+        <p className={classes.pSmall}>
+          {bookInfo.authors ? bookInfo.authors.join(", ") : null}
+        </p>
       </div>
     </Link>
   );

@@ -8,7 +8,9 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
-    padding: "1rem 0"
+    padding: "1rem 0",
+    maxWidth: "70rem",
+    margin: "4rem auto"
   }
 }));
 
