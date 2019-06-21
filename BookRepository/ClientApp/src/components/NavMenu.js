@@ -13,7 +13,25 @@ import "./NavMenu.css";
 import { logout } from "../util/auth_util";
 import { UserContext } from "./UserContext";
 
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    color: "#343a40",
+    background: "#fff",
+    border: "none",
+    padding: "8px",
+    "&:active": {
+      outline: "none"
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: "7px 0"
+    }
+  }
+}));
+
 function NavMenu() {
+  const classes = useStyles();
   const contextValue = useContext(UserContext);
   const [collapsed, setCollapsed] = useState(true);
 
@@ -53,7 +71,7 @@ function NavMenu() {
                     </NavLink>
                   </NavItem>
                   <NavItem onClick={handleLogout}>
-                    <button>Logout</button>
+                    <button className={classes.button}>Logout</button>
                   </NavItem>
                 </React.Fragment>
               ) : (

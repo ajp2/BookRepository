@@ -4,7 +4,7 @@ import { searchBooks } from "../util/books_util";
 import { UserContext } from "./UserContext";
 import { auth } from "../util/auth_util";
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Home() {
-  const theme = useTheme();
   const classes = useStyles();
   const contextValue = useContext(UserContext);
   const [bookQuery, setBookQuery] = useState("");
