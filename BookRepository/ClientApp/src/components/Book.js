@@ -13,24 +13,50 @@ import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   infoSection: {
-    display: "flex"
+    display: "flex",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    }
   },
   leftSection: {
-    width: "25%"
+    width: "25%",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      marginBottom: "2rem"
+    }
   },
   rightSection: {
     width: "75%",
-    marginLeft: "3.5rem"
+    marginLeft: "3.5rem",
+    [theme.breakpoints.down("sm")]: {
+      margin: "0 auto",
+      width: "90%"
+    }
+  },
+  bookImg: {
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+      margin: "0 auto"
+    }
   },
   bookContainer: {
     maxWidth: "70rem",
     margin: "4rem auto"
   },
   chapterSection: {
-    margin: "2.5rem 0 1rem 0"
+    margin: "2.5rem 0 1rem 0",
+    [theme.breakpoints.down("sm")]: {
+      width: "90%",
+      margin: "2rem auto"
+    }
   },
   button: {
-    margin: "4rem 5rem 2rem 5rem"
+    margin: "4rem 5rem 2rem 5rem",
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+      margin: "1.5rem auto"
+    }
   }
 }));
 
@@ -78,7 +104,11 @@ function Book({ match }) {
     <div className={classes.bookContainer}>
       <div className={classes.infoSection}>
         <div className={classes.leftSection}>
-          <img src={findImages(bookInfo.imageLinks)} alt={bookInfo.title} />
+          <img
+            src={findImages(bookInfo.imageLinks)}
+            className={classes.bookImg}
+            alt={bookInfo.title}
+          />
         </div>
         <div className={classes.rightSection}>
           <h2>{bookInfo.title}</h2>

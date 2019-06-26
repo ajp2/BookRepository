@@ -3,15 +3,21 @@ import BookList from "./BookList";
 import { getBooks } from "../util/books_util";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   bookListContainer: {
     maxWidth: "70rem",
-    margin: "4rem auto"
+    margin: "4rem auto",
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "30rem"
+    }
   },
   heading: {
     paddingBottom: "0.5rem",
     borderBottom: "1px solid #ccc",
-    fontSize: "24px"
+    fontSize: "24px",
+    [theme.breakpoints.down("md")]: {
+      textAlign: "center"
+    }
   }
 }));
 
