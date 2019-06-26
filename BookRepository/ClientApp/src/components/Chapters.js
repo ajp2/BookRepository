@@ -2,9 +2,19 @@ import React, { useState, useEffect } from "react";
 import ChapterForm from "./ChapterForm";
 import Chapter from "./Chapter";
 import { getChaptersByBookId } from "../util/chapters_util";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
+const useStyles = makeStyles(theme => ({
+  chaptersSection: {
+    [theme.breakpoints.down("sm")]: {
+      textAlign: "center"
+    }
+  }
+}));
+
 function Chapters({ bookId }) {
+  const classes = useStyles();
   const [chapters, setChapters] = useState([]);
   const [addChapter, setAddChapter] = useState(false);
   const [fetchedInfo, setFetchedInfo] = useState(false);
@@ -23,7 +33,7 @@ function Chapters({ bookId }) {
   if (!fetchedInfo) return false;
 
   return (
-    <div>
+    <div className={classes.chaptersSection}>
       <Button
         variant="outlined"
         color="primary"

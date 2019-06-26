@@ -4,16 +4,26 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   chapterContainer: {
     display: "flex",
-    margin: "2rem 0"
+    margin: "2rem 0",
+    [theme.breakpoints.down("sm")]: {
+      display: "initial",
+      width: "90%",
+      margin: "2rem auto"
+    }
   },
   chapterList: {
     listStyleType: "none",
     padding: "0",
     width: "20%",
-    borderRight: "1px solid #ccc"
+    borderRight: "1px solid #ccc",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      borderBottom: "1px solid #eee",
+      marginTop: "1.5rem"
+    }
   },
   chapterListItem: {
     padding: "0.4rem 0.2rem",
@@ -26,14 +36,26 @@ const useStyles = makeStyles(() => ({
   },
   chapterContent: {
     width: "80%",
-    paddingLeft: "5rem"
+    paddingLeft: "5rem",
+    [theme.breakpoints.down("sm")]: {
+      padding: "0",
+      margin: "0 auto",
+      marginTop: "1.5rem",
+      textAlign: "center"
+    }
   },
   chapterText: {
-    marginBottom: "3.5rem"
+    marginBottom: "3.5rem",
+    [theme.breakpoints.down("sm")]: {
+      margin: "3rem 0"
+    }
   },
   button: {
     marginRight: "5rem",
-    marginTop: "1.5rem"
+    marginTop: "1.5rem",
+    [theme.breakpoints.down("sm")]: {
+      margin: "0"
+    }
   },
   editForm: {
     display: "flex",
