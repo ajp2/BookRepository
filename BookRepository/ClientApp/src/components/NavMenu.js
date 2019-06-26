@@ -27,6 +27,15 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down("sm")]: {
       padding: "7px 0"
     }
+  },
+  brandImg: {
+    width: "45px",
+    height: "45px",
+    marginRight: "0.5rem",
+    [theme.breakpoints.down("sm")]: {
+      width: "35px",
+      height: "35px"
+    }
   }
 }));
 
@@ -54,6 +63,11 @@ function NavMenu() {
       >
         <Container>
           <NavbarBrand tag={Link} to="/">
+            <img
+              src={require("../logo.png")}
+              alt="Book Icon"
+              className={classes.brandImg}
+            />
             BookRepository
           </NavbarBrand>
           <NavbarToggler onClick={toggleNavbar} className="mr-2" />

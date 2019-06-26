@@ -31,6 +31,14 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "wrap",
     flexDirection: "column",
     textAlign: "center"
+  },
+  errorsList: {
+    listStyleType: "none",
+    color: "red",
+    marginTop: "0.5rem",
+    marginBottom: "0",
+    padding: "0",
+    textAlign: "left"
   }
 }));
 
@@ -59,7 +67,7 @@ function Auth({ session, history }) {
     <form className={`auth-form ${classes.form}`} onSubmit={handleSubmit}>
       <h1>Login</h1>
       {errors.length ? (
-        <ul>
+        <ul className={classes.errorsList}>
           {errors.map((err, idx) => (
             <li key={idx}>{err}</li>
           ))}
@@ -99,7 +107,7 @@ function Auth({ session, history }) {
     <form className={`auth-form ${classes.form}`} onSubmit={handleSubmit}>
       <h1>Sign up</h1>
       {errors && errors.length ? (
-        <ul>
+        <ul className={classes.errorsList}>
           {errors.map((err, idx) => (
             <li key={idx}>{err}</li>
           ))}
