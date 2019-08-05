@@ -119,7 +119,7 @@ namespace BookRepository
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    template: "{controller}/{action=Index}/{id?}")
             });
 
             app.UseSpa(spa =>
