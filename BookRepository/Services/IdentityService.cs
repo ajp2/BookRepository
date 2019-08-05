@@ -31,7 +31,8 @@ namespace BookRepository.Services
             {
                 return new AuthenticationResult
                 {
-                    Errors = new[] { "This username does not exist" }
+                    Errors = new[] { "This username does not exist" },
+                    Success = false
                 };
             }
 
@@ -40,7 +41,8 @@ namespace BookRepository.Services
             {
                 return new AuthenticationResult
                 {
-                    Errors = new[] { "Username or password is invalid" }
+                    Errors = new[] { "Username or password is invalid" },
+                    Success = false
                 };
             }
 
@@ -54,7 +56,8 @@ namespace BookRepository.Services
             {
                 return new AuthenticationResult
                 {
-                    Errors = new[] { "This username is already in use" }
+                    Errors = new[] { "This username is already in use" },
+                    Success = false
                 };
             }
 
@@ -65,7 +68,8 @@ namespace BookRepository.Services
             {
                 return new AuthenticationResult
                 {
-                    Errors = createdUser.Errors.Select(x => x.Description)
+                    Errors = createdUser.Errors.Select(x => x.Description),
+                    Success = false
                 };
             }
 

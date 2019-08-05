@@ -60,13 +60,15 @@ function Auth({ session, history }) {
         contextValue.loginSession(decoded);
         history.push("/");
       })
-      .catch(err => setErrors(err.response.data.errors));
+      .catch(err => {
+        setErrors(err.response.data.errors);
+      });
   };
 
   const login = () => (
     <form className={`auth-form ${classes.form}`} onSubmit={handleSubmit}>
       <h1>Login</h1>
-      {errors.length ? (
+      {errors && errors.length ? (
         <ul className={classes.errorsList}>
           {errors.map((err, idx) => (
             <li key={idx}>{err}</li>
